@@ -516,3 +516,58 @@ struct fdt_mpxy fdt_mpxy_rpmi_voltage_mbox = {
 	.match_table = mpxy_mbox_voltage_match,
 	.init = mpxy_mbox_init,
 };
+
+static struct rpmi_service_data device_power_services[] = {
+{
+	.id = RPMI_DEVICE_POWER_SRV_ENABLE_NOTIFICATION,
+	.min_tx_len = sizeof(struct rpmi_enable_notification_req),
+	.max_tx_len = sizeof(struct rpmi_enable_notification_req),
+	.min_rx_len = sizeof(struct rpmi_enable_notification_resp),
+	.max_rx_len = sizeof(struct rpmi_enable_notification_resp),
+},
+{
+	.id = RPMI_DEVICE_POWER_SRV_GET_NUM_DOMAINS,
+	.min_tx_len = 0,
+	.max_tx_len = 0,
+	.min_rx_len = sizeof(struct rpmi_device_power_get_num_domains_resp),
+	.max_rx_len = sizeof(struct rpmi_device_power_get_num_domains_resp),
+},
+{
+	.id = RPMI_DEVICE_POWER_SRV_GET_ATTRIBUTES,
+	.min_tx_len = sizeof(struct rpmi_device_power_get_attrs_req),
+	.max_tx_len = sizeof(struct rpmi_device_power_get_attrs_req),
+	.min_rx_len = sizeof(struct rpmi_device_power_get_attrs_resp),
+	.max_rx_len = sizeof(struct rpmi_device_power_get_attrs_resp),
+},
+{
+	.id = RPMI_DEVICE_POWER_SRV_SET_STATE,
+	.min_tx_len = sizeof(struct rpmi_device_power_set_state_req),
+	.max_tx_len = sizeof(struct rpmi_device_power_set_state_req),
+	.min_rx_len = sizeof(struct rpmi_device_power_set_state_resp),
+	.max_rx_len = sizeof(struct rpmi_device_power_set_state_resp),
+},
+{
+	.id = RPMI_DEVICE_POWER_SRV_GET_STATE,
+	.min_tx_len = sizeof(struct rpmi_device_power_get_state_req),
+	.max_tx_len = sizeof(struct rpmi_device_power_get_state_req),
+	.min_rx_len = sizeof(struct rpmi_device_power_get_state_resp),
+	.max_rx_len = sizeof(struct rpmi_device_power_get_state_resp),
+},
+};
+
+static struct mpxy_mbox_data device_power_data = {
+       .servicegrp_id = RPMI_SRVGRP_DEVICE_POWER,
+       .num_services = RPMI_DEVICE_POWER_SRV_ID_MAX_COUNT,
+       .notifications_support = 1,
+       .priv_data = device_power_services,
+};
+
+static const struct fdt_match mpxy_mbox_device_power_match[] = {
+	{ .compatible = "riscv,rpmi-mpxy-device-power", .data = &device_power_data },
+	{},
+};
+
+struct fdt_mpxy fdt_mpxy_rpmi_device_power_mbox = {
+	.match_table = mpxy_mbox_device_power_match,
+	.init = mpxy_mbox_init,
+};
