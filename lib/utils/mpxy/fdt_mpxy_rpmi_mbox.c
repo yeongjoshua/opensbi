@@ -431,12 +431,12 @@ static struct mpxy_mbox_data clock_data = {
 	.priv_data = clock_services,
 };
 
-static const struct fdt_match mpxy_mbox_match[] = {
+static const struct fdt_match mpxy_mbox_clock_match[] = {
 	{ .compatible = "riscv,rpmi-mpxy-clock", .data = &clock_data },
 	{ },
 };
 
-struct fdt_mpxy fdt_mpxy_rpmi_mbox = {
-	.match_table = mpxy_mbox_match,
+struct fdt_mpxy fdt_mpxy_rpmi_clock_mbox = {
+	.match_table = mpxy_mbox_clock_match,
 	.init = mpxy_mbox_init,
 };
