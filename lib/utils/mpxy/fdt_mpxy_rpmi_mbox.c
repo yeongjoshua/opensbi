@@ -440,3 +440,79 @@ struct fdt_mpxy fdt_mpxy_rpmi_clock_mbox = {
 	.match_table = mpxy_mbox_clock_match,
 	.init = mpxy_mbox_init,
 };
+
+static struct rpmi_service_data voltage_services[] = {
+{
+	.id = RPMI_VOLTAGE_SRV_ENABLE_NOTIFICATION,
+	.min_tx_len = sizeof(struct rpmi_enable_notification_req),
+	.max_tx_len = sizeof(struct rpmi_enable_notification_req),
+	.min_rx_len = sizeof(struct rpmi_enable_notification_resp),
+	.max_rx_len = sizeof(struct rpmi_enable_notification_resp),
+},
+{
+	.id = RPMI_VOLTAGE_SRV_GET_NUM_DOMAINS,
+	.min_tx_len = 0,
+	.max_tx_len = 0,
+	.min_rx_len = sizeof(struct rpmi_voltage_get_num_domains_resp),
+	.max_rx_len = sizeof(struct rpmi_voltage_get_num_domains_resp),
+},
+{
+	.id = RPMI_VOLTAGE_SRV_GET_ATTRIBUTES,
+	.min_tx_len = sizeof(struct rpmi_voltage_get_attributes_req),
+	.max_tx_len = sizeof(struct rpmi_voltage_get_attributes_req),
+	.min_rx_len = sizeof(struct rpmi_voltage_get_attributes_resp),
+	.max_rx_len = sizeof(struct rpmi_voltage_get_attributes_resp),
+},
+{
+	.id = RPMI_VOLTAGE_SRV_GET_SUPPORTED_LEVELS,
+	.min_tx_len = sizeof(struct rpmi_voltage_get_supported_rate_req),
+	.max_tx_len = sizeof(struct rpmi_voltage_get_supported_rate_req),
+	.min_rx_len = sizeof(struct rpmi_voltage_get_supported_rate_resp),
+	.max_rx_len = -1,
+},
+{
+	.id = RPMI_VOLTAGE_SRV_SET_CONFIG,
+	.min_tx_len = sizeof(struct rpmi_voltage_set_config_req),
+	.max_tx_len = sizeof(struct rpmi_voltage_set_config_req),
+	.min_rx_len = sizeof(struct rpmi_voltage_set_config_resp),
+	.max_rx_len = sizeof(struct rpmi_voltage_set_config_resp),
+},
+{
+	.id = RPMI_VOLTAGE_SRV_GET_CONFIG,
+	.min_tx_len = sizeof(struct rpmi_voltage_get_config_req),
+	.max_tx_len = sizeof(struct rpmi_voltage_get_config_req),
+	.min_rx_len = sizeof(struct rpmi_voltage_get_config_resp),
+	.max_rx_len = sizeof(struct rpmi_voltage_get_config_resp),
+},
+{
+	.id = RPMI_VOLTAGE_SRV_SET_LEVEL,
+	.min_tx_len = sizeof(struct rpmi_voltage_set_rate_req),
+	.max_tx_len = sizeof(struct rpmi_voltage_set_rate_req),
+	.min_rx_len = sizeof(struct rpmi_voltage_set_rate_resp),
+	.max_rx_len = sizeof(struct rpmi_voltage_set_rate_resp),
+},
+{
+	.id = RPMI_VOLTAGE_SRV_GET_LEVEL,
+	.min_tx_len = sizeof(struct rpmi_voltage_get_rate_req),
+	.max_tx_len = sizeof(struct rpmi_voltage_get_rate_req),
+	.min_rx_len = sizeof(struct rpmi_voltage_get_rate_resp),
+	.max_rx_len = sizeof(struct rpmi_voltage_get_rate_resp),
+},
+};
+
+static struct mpxy_mbox_data voltage_data = {
+	.servicegrp_id = RPMI_SRVGRP_VOLTAGE,
+	.num_services = RPMI_VOLTAGE_SRV_MAX_COUNT,
+	.notifications_support = 1,
+	.priv_data = voltage_services,
+};
+
+static const struct fdt_match mpxy_mbox_voltage_match[] = {
+	{ .compatible = "riscv,rpmi-mpxy-voltage", .data = &voltage_data },
+	{},
+};
+
+struct fdt_mpxy fdt_mpxy_rpmi_voltage_mbox = {
+	.match_table = mpxy_mbox_voltage_match,
+	.init = mpxy_mbox_init,
+};
