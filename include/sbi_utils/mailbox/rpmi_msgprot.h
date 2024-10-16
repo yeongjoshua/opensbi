@@ -194,6 +194,7 @@ enum rpmi_servicegroup_id {
 	RPMI_SRVGRP_VOLTAGE = 0x0006,
 	RPMI_SRVGRP_CLOCK = 0x0007,
 	RPMI_SRVGRP_DEVICE_POWER = 0x0008,
+	RPMI_SRVGRP_PERFORMANCE = 0x0009,
 	RPMI_SRVGRP_ID_MAX_COUNT,
 
 	/* Reserved range for service groups */
@@ -716,6 +717,118 @@ struct rpmi_device_power_get_state_req {
 struct rpmi_device_power_get_state_resp {
 	s32 status;
 	u32 state;
+};
+
+enum rpmi_performance_service_id {
+	RPMI_PERFORMANCE_SRV_ENABLE_NOTIFICATION = 0x01,
+	RPMI_PERFORMANCE_SRV_GET_NUM_DOMAIN = 0x02,
+	RPMI_PERFORMANCE_SRV_GET_ATTRIBUTES = 0x03,
+	RPMI_PERFORMANCE_SRV_GET_SUPPORTED_LEVELS = 0x04,
+	RPMI_PERFORMANCE_SRV_GET_LEVEL = 0x05,
+	RPMI_PERFORMANCE_SRV_SET_LEVEL = 0x06,
+	RPMI_PERFORMANCE_SRV_GET_LIMIT = 0x07,
+	RPMI_PERFORMANCE_SRV_SET_LIMIT = 0x08,
+	RPMI_PERFORMANCE_SRV_GET_FAST_CHANNEL_ATTR = 0x09,
+	RPMI_PERFORMANCE_SRV_ID_MAX_COUNT,
+};
+
+struct rpmi_performance_get_num_domain_resp {
+	s32 status;
+	u32 num_perf;
+};
+
+struct rpmi_performance_get_domain_attrs_req {
+	u32 domain_id;
+};
+
+struct rpmi_performance_get_domain_attrs_resp {
+	s32 status;
+	u32 flags;
+	u32 rate_limit_us;
+	u8 name[16];
+};
+
+struct rpmi_performance_get_domain_level_req {
+	u32 domain_id;
+	u32 perf_level_index;
+};
+
+struct rpmi_performance_domain_level {
+	u32 opp_level;
+	u32 power_cost_uw;
+	u32 transition_latency_us;
+};
+
+struct rpmi_performance_get_domain_level_resp_min {
+	s32 status;
+	u32 reserve;
+	u32 remaining;
+	u32 returned;
+	struct rpmi_performance_domain_level level;
+};
+
+struct rpmi_performance_get_domain_level_resp_max {
+	struct rpmi_performance_get_domain_level_resp_min resp_min;
+#define RPMI_PERFORMANCE_LEVEL_SIZE (RPMI_MSG_DATA_SIZE(RPMI_SLOT_SIZE_MIN) - \
+			      sizeof(struct rpmi_performance_get_domain_level_resp_min)) \
+			      / sizeof(struct rpmi_performance_domain_level)
+	struct rpmi_performance_domain_level level[RPMI_PERFORMANCE_LEVEL_SIZE];
+};
+
+struct rpmi_performance_get_level_req {
+	u32 domain_id;
+};
+
+struct rpmi_performance_get_level_resp {
+	s32 status;
+	u32 level;
+};
+
+struct rpmi_performance_set_level_req {
+	u32 domain_id;
+	u32 level;
+};
+
+struct rpmi_performance_set_level_resp {
+	s32 status;
+};
+
+struct rpmi_performance_get_limit_req {
+	u32 domain_id;
+};
+
+struct rpmi_performance_get_limit_resp {
+	s32 status;
+	u32 limit_max;
+	u32 limit_min;
+};
+
+struct rpmi_performance_set_limit_req {
+	u32 perf_id;
+	u32 level_max;
+	u32 level_min;
+};
+
+struct rpmi_performance_set_limit_resp {
+	s32 status;
+};
+
+struct rpmi_performance_get_fast_chn_addr_req {
+	u32 domain_id;
+	u32 service_id;
+};
+
+struct rpmi_performance_get_fast_chn_addr_resp {
+	s32 status;
+	u32 flags;
+	u32 phys_addr_low;
+	u32 phys_addr_high;
+	u32 db_addr_low;
+	u32 db_addr_high;
+	u32 db_id_low;
+	u32 db_id_high;
+	u32 db_perserved_low;
+	u32 db_perserved_high;
 };
 
 /** RPMI RAS-Agent ServiceGroup Service IDs */

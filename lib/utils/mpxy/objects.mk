@@ -13,4 +13,5 @@ libsbiutils-objs-$(CONFIG_FDT_MPXY) += mpxy/fdt_mpxy_drivers.carray.o
 carray-fdt_mpxy_drivers-$(CONFIG_FDT_MPXY_RPMI_MBOX) += fdt_mpxy_rpmi_clock_mbox
 carray-fdt_mpxy_drivers-$(CONFIG_FDT_MPXY_RPMI_MBOX) += fdt_mpxy_rpmi_voltage_mbox
 carray-fdt_mpxy_drivers-$(CONFIG_FDT_MPXY_RPMI_MBOX) += fdt_mpxy_rpmi_device_power_mbox
+carray-fdt_mpxy_drivers-$(CONFIG_FDT_MPXY_RPMI_MBOX) += fdt_mpxy_rpmi_performance_mbox
 libsbiutils-objs-$(CONFIG_FDT_MPXY_RPMI_MBOX) += mpxy/fdt_mpxy_rpmi_mbox.o

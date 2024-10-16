@@ -571,3 +571,86 @@ struct fdt_mpxy fdt_mpxy_rpmi_device_power_mbox = {
 	.match_table = mpxy_mbox_device_power_match,
 	.init = mpxy_mbox_init,
 };
+
+static struct rpmi_service_data performance_services[] = {
+{
+	.id = RPMI_PERFORMANCE_SRV_ENABLE_NOTIFICATION,
+	.min_tx_len = sizeof(struct rpmi_enable_notification_req),
+	.max_tx_len = sizeof(struct rpmi_enable_notification_req),
+	.min_rx_len = sizeof(struct rpmi_enable_notification_resp),
+	.max_rx_len = sizeof(struct rpmi_enable_notification_resp),
+},
+{
+	.id = RPMI_PERFORMANCE_SRV_GET_NUM_DOMAIN,
+	.min_tx_len = 0,
+	.max_tx_len = 0,
+	.min_rx_len = sizeof(struct rpmi_performance_get_num_domain_resp),
+	.max_rx_len = sizeof(struct rpmi_performance_get_num_domain_resp),
+},
+{
+	.id = RPMI_PERFORMANCE_SRV_GET_ATTRIBUTES,
+	.min_tx_len = sizeof(struct rpmi_performance_get_domain_attrs_req),
+	.max_tx_len = sizeof(struct rpmi_performance_get_domain_attrs_req),
+	.min_rx_len = sizeof(struct rpmi_performance_get_domain_attrs_resp),
+	.max_rx_len = sizeof(struct rpmi_performance_get_domain_attrs_resp),
+},
+{
+	.id = RPMI_PERFORMANCE_SRV_GET_SUPPORTED_LEVELS,
+	.min_tx_len = sizeof(struct rpmi_performance_get_domain_level_req),
+	.max_tx_len = sizeof(struct rpmi_performance_get_domain_level_req),
+	.min_rx_len = sizeof(struct rpmi_performance_get_domain_level_resp_min),
+	.max_rx_len = sizeof(struct rpmi_performance_get_domain_level_resp_max),
+},
+{
+	.id = RPMI_PERFORMANCE_SRV_GET_LEVEL,
+	.min_tx_len = sizeof(struct rpmi_performance_get_level_req),
+	.max_tx_len = sizeof(struct rpmi_performance_get_level_req),
+	.min_rx_len = sizeof(struct rpmi_performance_get_level_resp),
+	.max_rx_len = sizeof(struct rpmi_performance_get_level_resp),
+},
+{
+	.id = RPMI_PERFORMANCE_SRV_SET_LEVEL,
+	.min_tx_len = sizeof(struct rpmi_performance_set_level_req),
+	.max_tx_len = sizeof(struct rpmi_performance_set_level_req),
+	.min_rx_len = sizeof(struct rpmi_performance_set_level_resp),
+	.max_rx_len = sizeof(struct rpmi_performance_set_level_resp),
+},
+{
+	.id = RPMI_PERFORMANCE_SRV_GET_LIMIT,
+	.min_tx_len = sizeof(struct rpmi_performance_get_limit_req),
+	.max_tx_len = sizeof(struct rpmi_performance_get_limit_req),
+	.min_rx_len = sizeof(struct rpmi_performance_get_limit_resp),
+	.max_rx_len = sizeof(struct rpmi_performance_get_limit_resp),
+},
+{
+	.id = RPMI_PERFORMANCE_SRV_SET_LIMIT,
+	.min_tx_len = sizeof(struct rpmi_performance_set_limit_req),
+	.max_tx_len = sizeof(struct rpmi_performance_set_limit_req),
+	.min_rx_len = sizeof(struct rpmi_performance_set_limit_resp),
+	.max_rx_len = sizeof(struct rpmi_performance_set_limit_resp),
+},
+{
+	.id = RPMI_PERFORMANCE_SRV_GET_FAST_CHANNEL_ATTR,
+	.min_tx_len = sizeof(struct rpmi_performance_get_fast_chn_addr_req),
+	.max_tx_len = sizeof(struct rpmi_performance_get_fast_chn_addr_req),
+	.min_rx_len = sizeof(struct rpmi_performance_get_fast_chn_addr_resp),
+	.max_rx_len = sizeof(struct rpmi_performance_get_fast_chn_addr_resp),
+},
+};
+
+static struct mpxy_mbox_data performance_data = {
+	.servicegrp_id = RPMI_SRVGRP_PERFORMANCE,
+	.num_services = RPMI_PERFORMANCE_SRV_ID_MAX_COUNT,
+	.notifications_support = 1,
+	.priv_data = performance_services,
+};
+
+static const struct fdt_match mpxy_mbox_performance_match[] = {
+	{ .compatible = "riscv,rpmi-mpxy-performance", .data = &performance_data },
+	{},
+};
+
+struct fdt_mpxy fdt_mpxy_rpmi_performance_mbox = {
+	.match_table = mpxy_mbox_performance_match,
+	.init = mpxy_mbox_init,
+};
